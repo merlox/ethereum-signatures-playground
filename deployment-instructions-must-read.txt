@@ -1,0 +1,7 @@
+Deploy in this order:
+
+- Collections
+- Marketplace
+- Auctions
+
+Then in YallaSwapMarketplace set the auctions contract with the setYallaSwapAuctions() function.

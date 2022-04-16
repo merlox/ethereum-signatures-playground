@@ -1,0 +1,31 @@
+epi721 signatures are simple,
+
+do a keccak256 abi encode of the keccak256 of the setup like "Collection(address user, uint256 id)" while passing the values for the parameters like so:
+
+bytes32 two = keccak256(abi.encode(
+    keccak256("Collection(address user, uint256 id)"),
+    msg.sender,
+    10
+))
+
+that is the first second parameter
+
+the first parameter is the standard EPI712 hashed like the other so:
+
+bytes32 one = keccak256(abi.encode(
+    keccak256("EPI712_DOMAIN(string name,string version,uint256 chainId,address verifyContract,bytes32 salt)"),
+    keccak256("YallaSwap"),
+    keccak256("1"), // Version
+    chainId,
+    verifyingContract,
+    salt
+))
+
+the final one is:
+
+bytes32 final = keccak256(abi.encodePacked(
+    "\x19\x01", one, two
+));
+
+// V r s come from the frontend
+address signer = ecrecover(hashSigned, v, r, s);
